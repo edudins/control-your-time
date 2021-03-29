@@ -21,6 +21,13 @@ public class TimeFrame extends JFrame {
         status.setBackground(new Color(0x103C68));
         status.setBounds(menuWidth,0,statusWidth,this.getHeight());
 
+        // Buttons
+        JButton startTimerButton = new JButton();
+        startTimerButton.setText("START");
+        startTimerButton.setFocusable(false);
+        startTimerButton.setSize(menuWidth, 20);
+
+
         // ImageIcon
         ImageIcon favicon = new ImageIcon("time_icon.png"); // create an ImageIcon
         ImageIcon logo = new ImageIcon("time_logo.png");
@@ -38,6 +45,7 @@ public class TimeFrame extends JFrame {
         // Add components to Frame
         this.add(menu);
         this.add(status);
+        menu.add(startTimerButton);
 
         // Frame
         this.setTitle("Control Your Time");
