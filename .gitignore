@@ -1,0 +1,5 @@
+#Intellij Settings
+.idea
+
+#Compilation output
+out/**
