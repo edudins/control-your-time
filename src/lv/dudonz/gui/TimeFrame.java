@@ -2,9 +2,23 @@ package lv.dudonz.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class TimeFrame extends JFrame {
+public class TimeFrame extends JFrame implements ActionListener {
     private int menuWidth = 0, statusWidth = 0;
+    private JButton startTimerButton = new JButton();
+    private JLabel runningTime = new JLabel();
+    private long startTime = System.currentTimeMillis();
+
+    private String elapsedTime() {
+        long elapsedTimeInSeconds = (System.currentTimeMillis() - this.startTime) / 1000;
+        long seconds = elapsedTimeInSeconds % 60;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
 
     public TimeFrame() {
         // Get dims
@@ -22,11 +36,10 @@ public class TimeFrame extends JFrame {
         status.setBounds(menuWidth,0,statusWidth,this.getHeight());
 
         // Buttons
-        JButton startTimerButton = new JButton();
-        startTimerButton.setText("START");
-        startTimerButton.setFocusable(false);
-        startTimerButton.setSize(menuWidth, 20);
 
+        startTimerButton.setText("SHOW TIME");
+        startTimerButton.setFocusable(false);
+        startTimerButton.addActionListener(this);
 
         // ImageIcon
         ImageIcon favicon = new ImageIcon("time_icon.png"); // create an ImageIcon
@@ -38,6 +51,11 @@ public class TimeFrame extends JFrame {
         JLabel companyLogo = new JLabel();
         companyLogo.setIcon(logo);
         menu.add(companyLogo);
+
+        runningTime.setText("HH:MM:SS");
+        status.add(runningTime);
+        runningTime.setFont(new Font("Ubuntu", Font.BOLD, 20));
+        runningTime.setForeground(Color.WHITE);
 
         // Layout
         this.setLayout(null);
@@ -55,4 +73,10 @@ public class TimeFrame extends JFrame {
         this.setVisible(true);
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == startTimerButton) {
+            runningTime.setText(elapsedTime());
+        }
+    }
 }
