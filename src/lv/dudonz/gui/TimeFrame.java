@@ -4,23 +4,22 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TimeFrame extends JFrame {
-    private int menuWidth = 0, menuHeight = 0, statusWidth = 0, statusHeight = 0;
+    private int menuWidth = 0, statusWidth = 0;
 
     public TimeFrame() {
         // Get dims
+        this.setSize(600, 650);
         this.menuWidth = this.getWidth() / 3;
-        this.menuHeight = this.getHeight();
         this.statusWidth = this.getWidth() - menuWidth;
-        this.statusHeight = this.getHeight();
 
         // Panels
         JPanel menu = new JPanel();
         menu.setBackground(new Color(0x123456));
-        menu.setBounds(0,0,135,600);
+        menu.setBounds(0,0,menuWidth,this.getHeight());
 
         JPanel status = new JPanel();
         status.setBackground(new Color(0x103C68));
-        status.setBounds(135,0,310,600);
+        status.setBounds(menuWidth,0,statusWidth,this.getHeight());
 
 
         // ImageIcon
@@ -39,7 +38,6 @@ public class TimeFrame extends JFrame {
         this.setTitle("Control Your Time");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
-        this.setSize(420, 420);
 
         this.setVisible(true);
     }
