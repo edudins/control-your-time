@@ -21,11 +21,16 @@ public class TimeFrame extends JFrame {
         status.setBackground(new Color(0x103C68));
         status.setBounds(menuWidth,0,statusWidth,this.getHeight());
 
-
         // ImageIcon
-        ImageIcon favicon = new ImageIcon("time_logo.png"); // create an ImageIcon
+        ImageIcon favicon = new ImageIcon("time_icon.png"); // create an ImageIcon
+        ImageIcon logo = new ImageIcon("time_logo.png");
         this.setIconImage(favicon.getImage()); // change icon of this
         this.getContentPane().setBackground(new Color(0x123456)); // change colour of background
+
+        // Labels
+        JLabel companyLogo = new JLabel();
+        companyLogo.setIcon(logo);
+        menu.add(companyLogo);
 
         // Layout
         this.setLayout(null);
