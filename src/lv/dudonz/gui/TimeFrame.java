@@ -72,6 +72,7 @@ public class TimeFrame extends JFrame implements ActionListener {
             // close
             out.close();
             writeToFile.close();
+            statusInfo.setText("WROTE TO FILE");
         } catch(Exception e) {
             statusInfo.setText("ERROR");
             e.printStackTrace();
