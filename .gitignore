@@ -1,8 +1,8 @@
-#Intellij Settings
+# Intellij Settings
 .idea
 
-#Compilation output
+# Compilation output
 out/**
 
-#Created file
+# Created file
 time-record.txt

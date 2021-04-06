@@ -4,9 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TimeFrame extends JFrame implements ActionListener {
     private int menuWidth = 0, statusWidth = 0;
@@ -61,9 +64,16 @@ public class TimeFrame extends JFrame implements ActionListener {
 
     private void updateFile(String elapsedTime) {
         File file = new File("time-record.txt");
-        String lineToFile = System.lineSeparator() + elapsedTime;
+        // Add date and info to output
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+        Date date = new Date(System.currentTimeMillis());
+        String currentDate = formatter.format(date);
+        String lineToFile = System.lineSeparator() + "Date: " + currentDate + " Spent: " + elapsedTime;
+
         createFile(file);
+
         try {
+            // append for adding to existing data
             OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(file, true));
             PrintWriter writeToFile = new PrintWriter(out);
             writeToFile.append(lineToFile);
