@@ -1,5 +1,11 @@
-#Intellij Settings
-.idea
+# Intellij Settings
+/.idea/**
 
-#Compilation output
-out/**
+# Compilation output
+/out/**
+
+# Created file
+/time-record.txt
+
+# .iml file
+/control-your-time.iml
