@@ -12,6 +12,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TimeFrame extends JFrame implements ActionListener {
+    // Resolutions
+    private int frameWidth = 600;
+    private int frameHeight = 650;
+
     private int menuWidth = 0, statusWidth = 0;
     private JButton startTimerButton = new JButton(); // So that it can be accessed from the ActionPerformed method
     private JButton stopTimerButton = new JButton();
@@ -20,7 +24,9 @@ public class TimeFrame extends JFrame implements ActionListener {
     private JLabel statusInfo = new JLabel();
     private boolean running = false;
 
-    long startTime = 0;
+    // Time control variables
+    private long startTime = 0;
+    private int oneSecond = 1000;
 
     private void initialize() {
         running = true;
@@ -30,7 +36,7 @@ public class TimeFrame extends JFrame implements ActionListener {
                 while (running) {
                     runningTime.setText(elapsedTime(startTime));
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(oneSecond);
                     } catch(Exception e) {
                         e.printStackTrace();
                     }
@@ -93,7 +99,7 @@ public class TimeFrame extends JFrame implements ActionListener {
 
     public TimeFrame() {
         // Get dims
-        this.setSize(600, 650);
+        this.setSize(frameWidth, frameHeight);
         this.menuWidth = this.getWidth() / 3;
         this.statusWidth = this.getWidth() - menuWidth;
 
@@ -138,7 +144,6 @@ public class TimeFrame extends JFrame implements ActionListener {
         statusInfo.setFont(new Font("Ubuntu", Font.PLAIN, 16));
         statusInfo.setForeground(new Color(0xB6C9EC));
         statusInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
-
 
         // Layout
         this.setLayout(null);
