@@ -1,6 +1,6 @@
-package lv.dudonz;
+package lv.dudins;
 
-import lv.dudonz.gui.TimeFrame;
+import lv.dudins.gui.TimeFrame;
 
 public class Application {
 

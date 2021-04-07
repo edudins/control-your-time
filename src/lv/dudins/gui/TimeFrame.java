@@ -1,4 +1,4 @@
-package lv.dudonz.gui;
+package lv.dudins.gui;
 
 import javax.swing.*;
 import java.awt.*;
