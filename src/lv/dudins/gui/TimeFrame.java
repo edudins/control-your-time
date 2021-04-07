@@ -12,48 +12,45 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TimeFrame extends JFrame implements ActionListener {
-    // Resolutions
+    // Dims
     private int frameWidth = 600;
-    private int frameHeight = 650;
-
+    private int frameHeight = 400;
     private int menuWidth = 0, statusWidth = 0;
+    // JButtons
     private JButton startTimerButton = new JButton(); // So that it can be accessed from the ActionPerformed method
     private JButton stopTimerButton = new JButton();
-
+    private JButton pauseTimerButton = new JButton();
+    // JLabels
     private JLabel runningTime = new JLabel();
     private JLabel statusInfo = new JLabel();
-    private boolean running = false;
-
     // File variables
     private String fileName = "time-record.txt";
-
     // Time control variables
-    private long startTime = 0;
+    private long elapsedTime = -1; // So that timer starts with 0
     private int oneSecond = 1000;
+    private boolean running = false;
 
     private void initialize() {
         running = true;
-        this.startTime = System.currentTimeMillis();
         new Thread() {
             public void run() {
                 while (running) {
-                    runningTime.setText(elapsedTime(startTime));
+                    elapsedTime++;
+                    runningTime.setText(elapsedTimeString(elapsedTime));
                     try {
                         Thread.sleep(oneSecond);
                     } catch(Exception e) {
                         e.printStackTrace();
                     }
                 }
-
             }
         }.start();
     }
 
-    private String elapsedTime(long start) {
-        long elapsedTimeInSeconds = (System.currentTimeMillis() - start) / 1000;
-        long seconds = elapsedTimeInSeconds % 60;
-        long minutes = (elapsedTimeInSeconds / 60) % 60;
-        long hours = (elapsedTimeInSeconds / 3600) % 60;
+    private String elapsedTimeString(long elapsedTime) {
+        long seconds = elapsedTime % 60;
+        long minutes = (elapsedTime / 60) % 60;
+        long hours = (elapsedTime / 3600) % 60;
 
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
@@ -120,8 +117,6 @@ public class TimeFrame extends JFrame implements ActionListener {
             statusInfo.setText("ERROR");
             e.printStackTrace();
         }
-
-
     }
 
     public TimeFrame() {
@@ -148,6 +143,10 @@ public class TimeFrame extends JFrame implements ActionListener {
         stopTimerButton.setText("STOP");
         stopTimerButton.setFocusable(false);
         stopTimerButton.addActionListener(this);
+
+        pauseTimerButton.setText("PAUSE TOGGLE");
+        pauseTimerButton.setFocusable(false);
+        pauseTimerButton.addActionListener(this);
 
         // ImageIcon
         ImageIcon favicon = new ImageIcon("time_icon.png"); // create an ImageIcon
@@ -180,6 +179,7 @@ public class TimeFrame extends JFrame implements ActionListener {
         this.add(status);
         menu.add(startTimerButton);
         menu.add(stopTimerButton);
+        menu.add(pauseTimerButton);
 
         // Frame
         this.setTitle("Control Your Time");
@@ -194,10 +194,21 @@ public class TimeFrame extends JFrame implements ActionListener {
         if (e.getSource() == startTimerButton) {
             initialize();
             statusInfo.setText("TIMER RUNNING");
+        } else if (e.getSource() == pauseTimerButton) {
+            if (running) {
+                running = false;
+                statusInfo.setText("PAUSED");
+            } else {
+                elapsedTime--; // So elapsed time doesn't immediately go up by one
+                initialize();
+                statusInfo.setText("TIMER RUNNING");
+            }
         } else if (e.getSource() == stopTimerButton) {
             running = false;
-            updateFile(elapsedTime(startTime));
+            updateFile(elapsedTimeString(elapsedTime));
             runningTime.setText("00:00:00");
+            elapsedTime = 0;
         }
     }
+
 }
