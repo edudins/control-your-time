@@ -24,6 +24,9 @@ public class TimeFrame extends JFrame implements ActionListener {
     private JLabel statusInfo = new JLabel();
     private boolean running = false;
 
+    // File variables
+    private String fileName = "time-record.txt";
+
     // Time control variables
     private long startTime = 0;
     private int oneSecond = 1000;
@@ -55,10 +58,34 @@ public class TimeFrame extends JFrame implements ActionListener {
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
+    private void writeTemplate(File file) {
+        String templateString = "TIME SCHEDULE\n" +
+                "\n" +
+                "Date: YYYY-MM-DD at HH:MM:SS EEST Spent: HH:MM:SS | Comment\n" +
+                "--------------------------------------------------------------";
+
+        try {
+            // append for adding to existing data
+            OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(file, true));
+            PrintWriter writeToFile = new PrintWriter(out);
+            writeToFile.append(templateString);
+            writeToFile.flush();
+
+            // close
+            out.close();
+            writeToFile.close();
+            statusInfo.setText("TEMPLATE HAS BEEN SET UP");
+        } catch(Exception e) {
+            statusInfo.setText("ERROR");
+            e.printStackTrace();
+        }
+    }
+
     private void createFile(File file) {
         try {
             if (file.createNewFile()) {
                 statusInfo.setText("FILE CREATED");
+                writeTemplate(file);
             } else {
                 statusInfo.setText("WRITING TO EXISTING FILE");
             }
@@ -69,12 +96,12 @@ public class TimeFrame extends JFrame implements ActionListener {
     }
 
     private void updateFile(String elapsedTime) {
-        File file = new File("time-record.txt");
+        File file = new File(fileName);
         // Add date and info to output
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
         Date date = new Date(System.currentTimeMillis());
         String currentDate = formatter.format(date);
-        String lineToFile = System.lineSeparator() + "Date: " + currentDate + " Spent: " + elapsedTime;
+        String lineToFile = "\n" + "Date: " + currentDate + " Spent: " + elapsedTime;
 
         createFile(file);
 
