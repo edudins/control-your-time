@@ -25,8 +25,9 @@ public class TimeFrame extends JFrame implements ActionListener {
     private JLabel statusInfo = new JLabel();
     // File variables
     private String fileName = "time-record.txt";
-    private String iconLocation = "Resources Root/time_icon.png";
-    private String logoLocation = "Resources Root/time_logo.png";
+
+    private String iconLocation = "time_icon.png";
+    private String logoLocation = "time_logo.png";
     // Time control variables
     private long elapsedTime = -1; // So that timer starts with 0
     private int oneSecond = 1000;
