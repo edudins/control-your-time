@@ -25,6 +25,8 @@ public class TimeFrame extends JFrame implements ActionListener {
     private JLabel statusInfo = new JLabel();
     // File variables
     private String fileName = "time-record.txt";
+    private String iconLocation = "Resources Root/time_icon.png";
+    private String logoLocation = "Resources Root/time_logo.png";
     // Time control variables
     private long elapsedTime = -1; // So that timer starts with 0
     private int oneSecond = 1000;
@@ -149,8 +151,8 @@ public class TimeFrame extends JFrame implements ActionListener {
         pauseTimerButton.addActionListener(this);
 
         // ImageIcon
-        ImageIcon favicon = new ImageIcon("time_icon.png"); // create an ImageIcon
-        ImageIcon logo = new ImageIcon("time_logo.png");
+        ImageIcon favicon = new ImageIcon(iconLocation); // create an ImageIcon
+        ImageIcon logo = new ImageIcon(logoLocation);
         this.setIconImage(favicon.getImage()); // change icon of this
         this.getContentPane().setBackground(new Color(0x123456)); // change colour of background
 
