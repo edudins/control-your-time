@@ -13,24 +13,24 @@ import java.util.Date;
 
 public class TimeFrame extends JFrame implements ActionListener {
     // Dims
-    private int frameWidth = 600;
-    private int frameHeight = 400;
-    private int menuWidth = 0, statusWidth = 0;
+    private final int frameWidth = 600;
+    private final int frameHeight = 400;
+    private int menuWidth, statusWidth;
     // JButtons
-    private JButton startTimerButton = new JButton(); // So that it can be accessed from the ActionPerformed method
+    private JButton startTimerButton = new JButton();
     private JButton stopTimerButton = new JButton();
     private JButton pauseTimerButton = new JButton();
     // JLabels
     private JLabel runningTime = new JLabel();
     private JLabel statusInfo = new JLabel();
     // File variables
-    private String fileName = "time-record.txt";
+    private final String fileName = "time-record.txt";
 
-    private String iconLocation = "time_icon.png";
-    private String logoLocation = "time_logo.png";
+    private final String iconLocation = "time_icon.png";
+    private final String logoLocation = "time_logo.png";
     // Time control variables
     private long elapsedTime = -1; // So that timer starts with 0
-    private int oneSecond = 1000;
+    private final int oneSecond = 1000;
     private boolean running = false;
 
     private void initialize() {
@@ -194,7 +194,7 @@ public class TimeFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == startTimerButton) {
+        if (e.getSource() == startTimerButton && !running) {
             initialize();
             statusInfo.setText("TIMER RUNNING");
         } else if (e.getSource() == pauseTimerButton) {
