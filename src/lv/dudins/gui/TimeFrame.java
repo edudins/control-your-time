@@ -35,19 +35,17 @@ public class TimeFrame extends JFrame implements ActionListener {
 
     private void initialize() {
         running = true;
-        new Thread() {
-            public void run() {
-                while (running) {
-                    elapsedTime++;
-                    runningTime.setText(elapsedTimeString(elapsedTime));
-                    try {
-                        Thread.sleep(oneSecond);
-                    } catch(Exception e) {
-                        e.printStackTrace();
-                    }
+        new Thread(() -> {
+            while (running) {
+                elapsedTime++;
+                runningTime.setText(elapsedTimeString(elapsedTime));
+                try {
+                    Thread.sleep(oneSecond);
+                } catch(Exception e) {
+                    e.printStackTrace();
                 }
             }
-        }.start();
+        }).start();
     }
 
     private String elapsedTimeString(long elapsedTime) {
@@ -206,7 +204,7 @@ public class TimeFrame extends JFrame implements ActionListener {
                 initialize();
                 statusInfo.setText("TIMER RUNNING");
             }
-        } else if (e.getSource() == stopTimerButton) {
+    } else if (e.getSource() == stopTimerButton && running) {
             running = false;
             updateFile(elapsedTimeString(elapsedTime));
             runningTime.setText("00:00:00");
