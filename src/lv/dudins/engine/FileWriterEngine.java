@@ -7,9 +7,12 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
 public class FileWriterEngine {
+    String updateTemplate = "[UPDATE] : ";
+    String errorTemplate = "[ERROR] : ";
+    String successTemplate = "[SUCCESS] : ";
 
     public FileWriterEngine() {
-        System.out.println("[UPDATE] : File writer engine started.");
+        System.out.println(updateTemplate + "File writer engine started.");
     }
 
     public void writeTemplateFile(File file, JLabel statusInfo) {
@@ -28,14 +31,16 @@ public class FileWriterEngine {
             // close
             out.close();
             writeToFile.close();
-            statusInfo.setText("TEMPLATE HAS BEEN SET UP");
+            announce(updateTemplate, "Template file created.", statusInfo);
         } catch(Exception e) {
-            statusInfo.setText("ERROR");
+            announce(errorTemplate,"There was an error.", statusInfo);
             e.printStackTrace();
         }
     }
 
-    private void announceUpdate(String message, JFrame label) {
-
+    private void announce(String template, String message, JLabel label) {
+        label.setText(template + message);
+        System.out.println(template + message);
     }
+
 }
