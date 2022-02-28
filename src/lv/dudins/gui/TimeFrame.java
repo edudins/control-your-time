@@ -1,5 +1,7 @@
 package lv.dudins.gui;
 
+import lv.dudins.engine.FileWriterEngine;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,6 +14,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TimeFrame extends JFrame implements ActionListener {
+    // objects
+    FileWriterEngine fileWriterEngine = new FileWriterEngine();
+
     // Dims
     private final int frameWidth = 600;
     private final int frameHeight = 400;
@@ -56,34 +61,11 @@ public class TimeFrame extends JFrame implements ActionListener {
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
-    private void writeTemplate(File file) {
-        String templateString = "TIME SCHEDULE\n" +
-                "\n" +
-                "Date: YYYY-MM-DD at HH:MM:SS EEST Spent: HH:MM:SS | Comment\n" +
-                "--------------------------------------------------------------";
-
-        try {
-            // append for adding to existing data
-            OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(file, true));
-            PrintWriter writeToFile = new PrintWriter(out);
-            writeToFile.append(templateString);
-            writeToFile.flush();
-
-            // close
-            out.close();
-            writeToFile.close();
-            statusInfo.setText("TEMPLATE HAS BEEN SET UP");
-        } catch(Exception e) {
-            statusInfo.setText("ERROR");
-            e.printStackTrace();
-        }
-    }
-
     private void createFile(File file) {
         try {
             if (file.createNewFile()) {
                 statusInfo.setText("FILE CREATED");
-                writeTemplate(file);
+                fileWriterEngine.writeTemplateFile(file, statusInfo);
             } else {
                 statusInfo.setText("WRITING TO EXISTING FILE");
             }
