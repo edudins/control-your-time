@@ -15,7 +15,7 @@ public class FileWriterEngine {
         System.out.println(updateTemplate + "File writer engine started.");
     }
 
-    public void writeTemplateFile(File file, JLabel statusInfo) {
+    public void writeTemplateFile(File file, JLabel statusLabel) {
         String templateString = "TIME SCHEDULE\n" +
                 "\n" +
                 "Date: YYYY-MM-DD at HH:MM:SS EEST Spent: HH:MM:SS | Comment\n" +
@@ -31,9 +31,9 @@ public class FileWriterEngine {
             // close
             out.close();
             writeToFile.close();
-            announce(updateTemplate, "Template file created.", statusInfo);
+            announce(updateTemplate, "Template file created.", statusLabel);
         } catch(Exception e) {
-            announce(errorTemplate,"There was an error.", statusInfo);
+            announce(errorTemplate, "There was an error.", statusLabel);
             e.printStackTrace();
         }
     }

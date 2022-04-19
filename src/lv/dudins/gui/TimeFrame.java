@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TimeFrame extends JFrame implements ActionListener {
-    // objects
+    // Objects
     FileWriterEngine fileWriterEngine = new FileWriterEngine();
 
     // Dims
