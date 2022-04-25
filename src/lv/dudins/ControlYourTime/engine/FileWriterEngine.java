@@ -20,16 +20,15 @@ public class FileWriterEngine {
         System.out.println(updateTemplate + "File writer engine started.");
     }
 
-    private void createFile(File file, JLabel statusInfo) {
+    private void createFile(File file, JLabel statusLabel) {
         try {
             if (file.createNewFile()) {
-                statusInfo.setText("FILE CREATED");
-                this.writeTemplateFile(file, statusInfo);
+                writeTemplateFile(file, statusLabel);
             } else {
-                statusInfo.setText("WRITING TO EXISTING FILE");
+                announce(updateTemplate, "Writing to existing file.", statusLabel);
             }
         } catch(Exception e) {
-            statusInfo.setText("ERROR");
+            announce(errorTemplate, "Error in file operation.", statusLabel);
             e.printStackTrace();
         }
     }
@@ -50,15 +49,15 @@ public class FileWriterEngine {
             // close
             out.close();
             writeToFile.close();
-            announce(updateTemplate, "Template file created.", statusLabel);
+            announce(successTemplate, "Template file created.", statusLabel);
         } catch(Exception e) {
-            announce(errorTemplate, "There was an error.", statusLabel);
+            announce(errorTemplate, "Error in file operation.", statusLabel);
             e.printStackTrace();
         }
     }
 
     // entry to file creation from TimeFrame
-    public void updateFile(String elapsedTime, JLabel statusInfo) {
+    public void updateFile(String elapsedTime, JLabel statusLabel) {
         File file = new File(fileName);
         // Add date and info to output
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
@@ -66,7 +65,7 @@ public class FileWriterEngine {
         String currentDate = formatter.format(date);
         String lineToFile = "\n" + "Date: " + currentDate + " Spent: " + elapsedTime;
 
-        createFile(file, statusInfo);
+        createFile(file, statusLabel);
 
         try {
             // append for adding to existing data
@@ -78,9 +77,9 @@ public class FileWriterEngine {
             // close
             out.close();
             writeToFile.close();
-            statusInfo.setText("WROTE TO FILE");
+            announce(successTemplate, "Wrote to file.", statusLabel);
         } catch(Exception e) {
-            statusInfo.setText("ERROR");
+            announce(errorTemplate, "Error in file operation.", statusLabel);
             e.printStackTrace();
         }
     }
