@@ -1,6 +1,6 @@
-package lv.dudins;
+package lv.dudins.ControlYourTime;
 
-import lv.dudins.gui.TimeFrame;
+import lv.dudins.ControlYourTime.gui.TimeFrame;
 
 public class Application {
 

@@ -1,4 +1,4 @@
-package lv.dudins.engine;
+package lv.dudins.ControlYourTime.engine;
 
 import javax.swing.*;
 import java.io.File;

@@ -1,6 +1,6 @@
-package lv.dudins.gui;
+package lv.dudins.ControlYourTime.gui;
 
-import lv.dudins.engine.FileWriterEngine;
+import lv.dudins.ControlYourTime.engine.FileWriterEngine;
 
 import javax.swing.*;
 import java.awt.*;
