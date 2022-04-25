@@ -6,12 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class TimeFrame extends JFrame implements ActionListener {
     // Objects
@@ -28,8 +22,6 @@ public class TimeFrame extends JFrame implements ActionListener {
     // JLabels
     private JLabel runningTime = new JLabel();
     private JLabel statusInfo = new JLabel();
-    // File variables
-    private final String fileName = "time-record.txt";
 
     private final String iconLocation = "time_icon.png";
     private final String logoLocation = "time_logo.png";
@@ -59,47 +51,6 @@ public class TimeFrame extends JFrame implements ActionListener {
         long hours = (elapsedTime / 3600) % 60;
 
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
-    }
-
-    private void createFile(File file) {
-        try {
-            if (file.createNewFile()) {
-                statusInfo.setText("FILE CREATED");
-                fileWriterEngine.writeTemplateFile(file, statusInfo);
-            } else {
-                statusInfo.setText("WRITING TO EXISTING FILE");
-            }
-        } catch(Exception e) {
-            statusInfo.setText("ERROR");
-            e.printStackTrace();
-        }
-    }
-
-    private void updateFile(String elapsedTime) {
-        File file = new File(fileName);
-        // Add date and info to output
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
-        Date date = new Date(System.currentTimeMillis());
-        String currentDate = formatter.format(date);
-        String lineToFile = "\n" + "Date: " + currentDate + " Spent: " + elapsedTime;
-
-        createFile(file);
-
-        try {
-            // append for adding to existing data
-            OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(file, true));
-            PrintWriter writeToFile = new PrintWriter(out);
-            writeToFile.append(lineToFile);
-            writeToFile.flush();
-
-            // close
-            out.close();
-            writeToFile.close();
-            statusInfo.setText("WROTE TO FILE");
-        } catch(Exception e) {
-            statusInfo.setText("ERROR");
-            e.printStackTrace();
-        }
     }
 
     public TimeFrame() {
@@ -188,7 +139,7 @@ public class TimeFrame extends JFrame implements ActionListener {
             }
     } else if (e.getSource() == stopTimerButton && running) {
             running = false;
-            updateFile(elapsedTimeString(elapsedTime));
+            fileWriterEngine.updateFile(elapsedTimeString(elapsedTime), statusInfo);
             runningTime.setText("00:00:00");
             elapsedTime = 0;
         }
