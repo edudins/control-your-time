@@ -21,4 +21,9 @@ public class LoggerEngine {
     public void announce(String template, String message) {
         System.out.println(template + message);
     }
+
+    public void announceAndSetLabel(String template, String message) {
+        this.label.setText(template + message);
+        System.out.println(template + message);
+    }
 }
