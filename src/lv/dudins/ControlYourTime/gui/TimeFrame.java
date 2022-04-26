@@ -1,6 +1,8 @@
 package lv.dudins.ControlYourTime.gui;
 
 import lv.dudins.ControlYourTime.engine.FileWriterEngine;
+import lv.dudins.ControlYourTime.engine.LoggerEngine;
+import lv.dudins.ControlYourTime.literals.MessageTemplate;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,9 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TimeFrame extends JFrame implements ActionListener {
-    // Objects
-    FileWriterEngine fileWriterEngine = new FileWriterEngine();
-
     // Dims
     private final int frameWidth = 600;
     private final int frameHeight = 400;
@@ -29,6 +28,10 @@ public class TimeFrame extends JFrame implements ActionListener {
     private long elapsedTime = -1; // So that timer starts with 0
     private final int oneSecond = 1000;
     private boolean running = false;
+
+    // Objects
+    FileWriterEngine fileWriterEngine = new FileWriterEngine();
+    LoggerEngine loggerEngine = new LoggerEngine(statusInfo);
 
     private void initialize() {
         running = true;
@@ -127,7 +130,7 @@ public class TimeFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == startTimerButton && !running) {
             initialize();
-            statusInfo.setText("TIMER RUNNING");
+            loggerEngine.setLabel(MessageTemplate.UPDATE.getTemplate(), "Timer started.");
         } else if (e.getSource() == pauseTimerButton) {
             if (running) {
                 running = false;
