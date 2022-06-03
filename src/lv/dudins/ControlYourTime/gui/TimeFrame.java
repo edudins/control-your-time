@@ -130,15 +130,15 @@ public class TimeFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == startTimerButton && !running) {
             initialize();
-            loggerEngine.setLabel(MessageTemplate.UPDATE.getTemplate(), "Timer started.");
+            loggerEngine.announceAndSetLabel(MessageTemplate.UPDATE.getTemplate(), "Timer started.");
         } else if (e.getSource() == pauseTimerButton) {
             if (running) {
                 running = false;
-                statusInfo.setText("PAUSED");
+                loggerEngine.announceAndSetLabel(MessageTemplate.UPDATE.getTemplate(), "Paused.");
             } else {
                 elapsedTime--; // So elapsed time doesn't immediately go up by one
                 initialize();
-                statusInfo.setText("TIMER RUNNING");
+                loggerEngine.announceAndSetLabel(MessageTemplate.UPDATE.getTemplate(), "Timer running.");
             }
     } else if (e.getSource() == stopTimerButton && running) {
             running = false;
