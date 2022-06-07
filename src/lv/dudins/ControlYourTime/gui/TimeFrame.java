@@ -1,5 +1,6 @@
 package lv.dudins.ControlYourTime.gui;
 
+import lv.dudins.ControlYourTime.engine.ClockEngine;
 import lv.dudins.ControlYourTime.engine.FileWriterEngine;
 import lv.dudins.ControlYourTime.engine.LoggerEngine;
 import lv.dudins.ControlYourTime.literals.MessageTemplate;
@@ -14,39 +15,26 @@ public class TimeFrame extends JFrame {
     private final int frameWidth = 600;
     private final int frameHeight = 400;
     private int menuWidth, statusWidth;
-    // JButtons
-    private ResponsiveJButton startTimerButton = new ResponsiveJButton();
-    private ResponsiveJButton stopTimerButton = new ResponsiveJButton();
-    private ResponsiveJButton pauseTimerButton = new ResponsiveJButton();
+
     // JLabels
     private JLabel runningTime = new JLabel();
     private JLabel statusInfo = new JLabel();
 
+    // Files
     private final String iconLocation = "res/time_icon.png";
     private final String logoLocation = "res/time_logo.png";
-    // Time control variables
-    private long elapsedTime = -1; // So that timer starts with 0
-    private final int oneSecond = 1000;
-    private boolean running = false;
 
-    // Objects
+    // Objects and injections
     FileWriterEngine fileWriterEngine = new FileWriterEngine();
     LoggerEngine loggerEngine = new LoggerEngine(statusInfo);
+    ClockEngine clock = new ClockEngine(loggerEngine);
 
-    private void initialize() {
-        running = true;
-        new Thread(() -> {
-            while (running) {
-                elapsedTime++;
-                runningTime.setText(elapsedTimeString(elapsedTime));
-                try {
-                    Thread.sleep(oneSecond);
-                } catch(Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
+    // JButtons
+    private ResponsiveJButton startTimerButton = new ResponsiveJButton(clock, loggerEngine);
+    private ResponsiveJButton stopTimerButton = new ResponsiveJButton(clock, loggerEngine);
+    private ResponsiveJButton pauseTimerButton = new ResponsiveJButton(clock, loggerEngine);
+
+
 
     private String elapsedTimeString(long elapsedTime) {
         long seconds = elapsedTime % 60;
@@ -122,27 +110,5 @@ public class TimeFrame extends JFrame {
 
         this.setVisible(true);
     }
-
-//    @Override
-//    public void actionPerformed(ActionEvent e) {
-//        if (e.getSource() == startTimerButton && !running) {
-//            initialize();
-//            loggerEngine.announceAndSetLabel(MessageTemplate.UPDATE.getTemplate(), "Timer started.");
-//        } else if (e.getSource() == pauseTimerButton) {
-//            if (running) {
-//                running = false;
-//                loggerEngine.announceAndSetLabel(MessageTemplate.UPDATE.getTemplate(), "Paused.");
-//            } else {
-//                elapsedTime--; // So elapsed time doesn't immediately go up by one
-//                initialize();
-//                loggerEngine.announceAndSetLabel(MessageTemplate.UPDATE.getTemplate(), "Timer running.");
-//            }
-//    } else if (e.getSource() == stopTimerButton && running) {
-//            running = false;
-//            fileWriterEngine.updateFile(elapsedTimeString(elapsedTime), statusInfo);
-//            runningTime.setText("00:00:00");
-//            elapsedTime = 0;
-//        }
-//    }
 
 }
