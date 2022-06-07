@@ -9,15 +9,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TimeFrame extends JFrame implements ActionListener {
+public class TimeFrame extends JFrame {
     // Dims
     private final int frameWidth = 600;
     private final int frameHeight = 400;
     private int menuWidth, statusWidth;
     // JButtons
-    private JButton startTimerButton = new JButton();
-    private JButton stopTimerButton = new JButton();
-    private JButton pauseTimerButton = new JButton();
+    private ResponsiveJButton startTimerButton = new ResponsiveJButton();
+    private ResponsiveJButton stopTimerButton = new ResponsiveJButton();
+    private ResponsiveJButton pauseTimerButton = new ResponsiveJButton();
     // JLabels
     private JLabel runningTime = new JLabel();
     private JLabel statusInfo = new JLabel();
@@ -75,15 +75,12 @@ public class TimeFrame extends JFrame implements ActionListener {
         // Buttons
         startTimerButton.setText("START");
         startTimerButton.setFocusable(false);
-        startTimerButton.addActionListener(this);
 
         stopTimerButton.setText("STOP");
         stopTimerButton.setFocusable(false);
-        stopTimerButton.addActionListener(this);
 
-        pauseTimerButton.setText("PAUSE TOGGLE");
+        pauseTimerButton.setText("PAUSE");
         pauseTimerButton.setFocusable(false);
-        pauseTimerButton.addActionListener(this);
 
         // ImageIcon
         ImageIcon favicon = new ImageIcon(iconLocation); // create an ImageIcon
@@ -126,26 +123,26 @@ public class TimeFrame extends JFrame implements ActionListener {
         this.setVisible(true);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == startTimerButton && !running) {
-            initialize();
-            loggerEngine.announceAndSetLabel(MessageTemplate.UPDATE.getTemplate(), "Timer started.");
-        } else if (e.getSource() == pauseTimerButton) {
-            if (running) {
-                running = false;
-                loggerEngine.announceAndSetLabel(MessageTemplate.UPDATE.getTemplate(), "Paused.");
-            } else {
-                elapsedTime--; // So elapsed time doesn't immediately go up by one
-                initialize();
-                loggerEngine.announceAndSetLabel(MessageTemplate.UPDATE.getTemplate(), "Timer running.");
-            }
-    } else if (e.getSource() == stopTimerButton && running) {
-            running = false;
-            fileWriterEngine.updateFile(elapsedTimeString(elapsedTime), statusInfo);
-            runningTime.setText("00:00:00");
-            elapsedTime = 0;
-        }
-    }
+//    @Override
+//    public void actionPerformed(ActionEvent e) {
+//        if (e.getSource() == startTimerButton && !running) {
+//            initialize();
+//            loggerEngine.announceAndSetLabel(MessageTemplate.UPDATE.getTemplate(), "Timer started.");
+//        } else if (e.getSource() == pauseTimerButton) {
+//            if (running) {
+//                running = false;
+//                loggerEngine.announceAndSetLabel(MessageTemplate.UPDATE.getTemplate(), "Paused.");
+//            } else {
+//                elapsedTime--; // So elapsed time doesn't immediately go up by one
+//                initialize();
+//                loggerEngine.announceAndSetLabel(MessageTemplate.UPDATE.getTemplate(), "Timer running.");
+//            }
+//    } else if (e.getSource() == stopTimerButton && running) {
+//            running = false;
+//            fileWriterEngine.updateFile(elapsedTimeString(elapsedTime), statusInfo);
+//            runningTime.setText("00:00:00");
+//            elapsedTime = 0;
+//        }
+//    }
 
 }
