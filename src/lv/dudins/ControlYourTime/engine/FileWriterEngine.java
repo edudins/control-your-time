@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+// TODO: Remove associated Jlabel, only logger engine to have it.
+
 public class FileWriterEngine {
     // Log variables
     String updateTemplate = "[UPDATE] : ";
@@ -82,6 +84,14 @@ public class FileWriterEngine {
             announce(errorTemplate, "Error in file operation.", statusLabel);
             e.printStackTrace();
         }
+    }
+
+    private String elapsedTimeString(long elapsedTime) {
+        long seconds = elapsedTime % 60;
+        long minutes = (elapsedTime / 60) % 60;
+        long hours = (elapsedTime / 3600) % 60;
+
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
     private void announce(String template, String message, JLabel label) {

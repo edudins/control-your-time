@@ -1,14 +1,10 @@
 package lv.dudins.ControlYourTime.gui;
 
 import lv.dudins.ControlYourTime.engine.ClockEngine;
-import lv.dudins.ControlYourTime.engine.FileWriterEngine;
 import lv.dudins.ControlYourTime.engine.LoggerEngine;
-import lv.dudins.ControlYourTime.literals.MessageTemplate;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class TimeFrame extends JFrame {
     // Dims
@@ -25,7 +21,6 @@ public class TimeFrame extends JFrame {
     private final String logoLocation = "res/time_logo.png";
 
     // Objects and injections
-    FileWriterEngine fileWriterEngine = new FileWriterEngine();
     LoggerEngine loggerEngine = new LoggerEngine(statusInfo);
     ClockEngine clock = new ClockEngine(loggerEngine);
 
@@ -33,16 +28,6 @@ public class TimeFrame extends JFrame {
     private ResponsiveJButton startTimerButton = new ResponsiveJButton(clock, loggerEngine);
     private ResponsiveJButton stopTimerButton = new ResponsiveJButton(clock, loggerEngine);
     private ResponsiveJButton pauseTimerButton = new ResponsiveJButton(clock, loggerEngine);
-
-
-
-    private String elapsedTimeString(long elapsedTime) {
-        long seconds = elapsedTime % 60;
-        long minutes = (elapsedTime / 60) % 60;
-        long hours = (elapsedTime / 3600) % 60;
-
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
-    }
 
     public TimeFrame() {
         // Get dims

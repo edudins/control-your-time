@@ -10,7 +10,9 @@ public class ClockEngine {
     private boolean running;
     private long startTime;
 
+    // Objects
     LoggerEngine loggerEngine;
+    FileWriterEngine fileWriterEngine = new FileWriterEngine();
 
     public ClockEngine(LoggerEngine loggerEngine) {
         running = false;
@@ -25,6 +27,7 @@ public class ClockEngine {
     public void stop() {
         startTime = getTime();
         running = false;
+        // write file
     }
 
     public void toggle() {
