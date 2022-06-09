@@ -2,21 +2,19 @@ package lv.dudins.ControlYourTime.engine;
 
 import lv.dudins.ControlYourTime.literals.MessageTemplate;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class ClockEngine {
     // Time control variables
     private boolean running;
     private long startTime;
 
     // Objects
-    LoggerEngine loggerEngine;
-    FileWriterEngine fileWriterEngine = new FileWriterEngine();
+    protected LoggerEngine log;
+    protected FileWriterEngine fileWriterEngine;
 
     public ClockEngine(LoggerEngine loggerEngine) {
         running = false;
-        this.loggerEngine = loggerEngine;
+        this.log = loggerEngine;
+        this.fileWriterEngine = new FileWriterEngine(this.log);
     }
 
     public void start() {
@@ -41,10 +39,10 @@ public class ClockEngine {
     public long getTime() {
         if (running) {
             long time = System.currentTimeMillis() - startTime;
-            loggerEngine.announceAndSetLabel(MessageTemplate.UPDATE.getTemplate(), Long.toString(time));
+            log.announceAndSetLabel(MessageTemplate.UPDATE.get(), Long.toString(time));
             return time;
         } else {
-            loggerEngine.announceAndSetLabel(MessageTemplate.UPDATE.getTemplate(), Long.toString(startTime));
+            log.announceAndSetLabel(MessageTemplate.UPDATE.get(), Long.toString(startTime));
             return startTime;
         }
     }

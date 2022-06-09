@@ -11,7 +11,7 @@ public class LoggerEngine {
 
     public LoggerEngine(JLabel label) {
         this.label = label;
-        announce(MessageTemplate.UPDATE.getTemplate(), "Logger started.");
+        announce(MessageTemplate.UPDATE.get(), "Logger started.");
     }
 
     public void setLabel(String template, String status) {

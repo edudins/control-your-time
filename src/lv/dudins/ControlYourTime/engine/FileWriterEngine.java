@@ -1,5 +1,7 @@
 package lv.dudins.ControlYourTime.engine;
 
+import lv.dudins.ControlYourTime.literals.MessageTemplate;
+
 import javax.swing.*;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,9 +19,12 @@ public class FileWriterEngine {
     String successTemplate = "[SUCCESS] : ";
     // File variables
     private final String fileName = "time-record.txt";
+    // Objects
+    LoggerEngine log;
 
-    public FileWriterEngine() {
-        System.out.println(updateTemplate + "File writer engine started.");
+    public FileWriterEngine(LoggerEngine loggerEngine) {
+        this.log = loggerEngine;
+        log.announceAndSetLabel(MessageTemplate.UPDATE.get(), "File Writer started.");
     }
 
     private void createFile(File file, JLabel statusLabel) {

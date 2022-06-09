@@ -21,7 +21,7 @@ public class ResponsiveJButton extends JButton implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
-        log.announceAndSetLabel(MessageTemplate.UPDATE.getTemplate(), command);
+        log.announceAndSetLabel(MessageTemplate.UPDATE.get(), command);
         switch (command) {
             case "START":
                 clock.start();
