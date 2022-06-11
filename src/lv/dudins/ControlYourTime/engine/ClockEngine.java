@@ -2,6 +2,8 @@ package lv.dudins.ControlYourTime.engine;
 
 import lv.dudins.ControlYourTime.literals.MessageTemplate;
 
+import java.util.concurrent.TimeUnit;
+
 public class ClockEngine {
     // Time control variables
     private boolean running;
@@ -25,7 +27,7 @@ public class ClockEngine {
     public void stop() {
         startTime = getTimeMillis();
         running = false;
-        // write file
+        fileWriterEngine.updateFile(elapsedTimeString(startTime));
     }
 
     public void toggle() {
@@ -49,9 +51,9 @@ public class ClockEngine {
     }
 
     private String elapsedTimeString(long elapsedTime) {
-        long seconds = elapsedTime % 60;
-        long minutes = (elapsedTime / 60) % 60;
-        long hours = (elapsedTime / 3600) % 60;
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(elapsedTime);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTime);
+        long hours = TimeUnit.MILLISECONDS.toHours(elapsedTime);
 
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
