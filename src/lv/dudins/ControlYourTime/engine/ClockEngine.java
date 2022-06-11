@@ -23,12 +23,13 @@ public class ClockEngine {
     }
 
     public void stop() {
-        startTime = getTime();
+        startTime = getTimeMillis();
         running = false;
         // write file
     }
 
     public void toggle() {
+        // TODO: fix timer toggle
         if (running) {
             stop();
         } else {
@@ -36,7 +37,7 @@ public class ClockEngine {
         }
     }
 
-    public long getTime() {
+    public long getTimeMillis() {
         if (running) {
             long time = System.currentTimeMillis() - startTime;
             log.announceAndSetLabel(MessageTemplate.UPDATE.get(), Long.toString(time));
@@ -45,5 +46,13 @@ public class ClockEngine {
             log.announceAndSetLabel(MessageTemplate.UPDATE.get(), Long.toString(startTime));
             return startTime;
         }
+    }
+
+    private String elapsedTimeString(long elapsedTime) {
+        long seconds = elapsedTime % 60;
+        long minutes = (elapsedTime / 60) % 60;
+        long hours = (elapsedTime / 3600) % 60;
+
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 }
