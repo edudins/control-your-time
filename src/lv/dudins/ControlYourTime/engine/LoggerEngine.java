@@ -15,7 +15,7 @@ public class LoggerEngine {
     }
 
     public void setLabel(String template, String status) {
-        this.label.setText(template + status);
+        label.setText(template + status);
     }
 
     public void announce(String template, String message) {
@@ -23,7 +23,7 @@ public class LoggerEngine {
     }
 
     public void announceAndSetLabel(String template, String message) {
-        this.label.setText(template + message);
+        label.setText(template + message);
         System.out.println(template + message);
     }
 }
