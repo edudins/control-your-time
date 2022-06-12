@@ -2,7 +2,11 @@ package lv.dudins.ControlYourTime.engine;
 
 import lv.dudins.ControlYourTime.literals.MessageTemplate;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class ClockEngine {
     // Time control variables
@@ -12,11 +16,13 @@ public class ClockEngine {
     // Objects
     protected LoggerEngine log;
     protected FileWriterEngine fileWriterEngine;
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     public ClockEngine(LoggerEngine loggerEngine) {
         running = false;
         this.log = loggerEngine;
         this.fileWriterEngine = new FileWriterEngine(this.log);
+        scheduler.scheduleAtFixedRate(displayTime(), 1, 1, SECONDS);
     }
 
     public void start() {
@@ -39,13 +45,20 @@ public class ClockEngine {
         }
     }
 
+    private Runnable displayTime() {
+        return new Runnable() {
+            public void run() {
+                if (running) {
+                    log.announceAndSetLabel(MessageTemplate.UPDATE.get(), elapsedTimeString(getTimeMillis()));
+                }
+            }
+        };
+    }
+
     public long getTimeMillis() {
         if (running) {
-            long time = System.currentTimeMillis() - startTime;
-            log.announceAndSetLabel(MessageTemplate.UPDATE.get(), Long.toString(time));
-            return time;
+            return System.currentTimeMillis() - startTime;
         } else {
-            log.announceAndSetLabel(MessageTemplate.UPDATE.get(), Long.toString(startTime));
             return startTime;
         }
     }
