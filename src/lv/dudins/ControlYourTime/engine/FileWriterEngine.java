@@ -1,13 +1,13 @@
 package lv.dudins.ControlYourTime.engine;
 
-import lv.dudins.ControlYourTime.literals.MessageTemplate;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static lv.dudins.ControlYourTime.literals.MessageTemplate.*;
 
 public class FileWriterEngine {
     // File variables
@@ -17,7 +17,7 @@ public class FileWriterEngine {
 
     public FileWriterEngine(LoggerEngine loggerEngine) {
         this.log = loggerEngine;
-        log.announceAndSetLabel(MessageTemplate.UPDATE.get(), "File Writer started.");
+        log.announceAndSetStatusLabel(UPDATE, "File Writer started.");
     }
 
     // entry to file creation from Clock Engine
@@ -42,9 +42,9 @@ public class FileWriterEngine {
             writeToFile.close();
 
             // log
-            log.announceAndSetLabel(MessageTemplate.SUCCESS.get(), "Wrote to file.");
+            log.announceAndSetStatusLabel(SUCCESS, "Wrote to file.");
         } catch(Exception e) {
-            log.announce(MessageTemplate.ERROR.get(), "Error in file operation.");
+            log.announce(ERROR, "Error in file operation.");
             e.printStackTrace();
         }
     }
@@ -54,10 +54,10 @@ public class FileWriterEngine {
             if (file.createNewFile()) {
                 writeTemplateFile(file);
             } else {
-            log.announce(MessageTemplate.SUCCESS.get(), "Writing to existing file.");
+            log.announce(SUCCESS, "Writing to existing file.");
             }
         } catch(Exception e) {
-            log.announce(MessageTemplate.ERROR.get(), "Error in file operation.");
+            log.announce(ERROR, "Error in file operation.");
             e.printStackTrace();
         }
     }
@@ -79,9 +79,9 @@ public class FileWriterEngine {
             writeToFile.close();
 
             // log
-            log.announce(MessageTemplate.SUCCESS.get(), "Template file created.");
+            log.announce(SUCCESS, "Template file created.");
         } catch(Exception e) {
-            log.announce(MessageTemplate.ERROR.get(), "Error in file operation.");
+            log.announce(ERROR, "Error in file operation.");
             e.printStackTrace();
         }
     }

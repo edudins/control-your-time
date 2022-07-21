@@ -21,7 +21,7 @@ public class TimeFrame extends JFrame {
     private final String logoLocation = "res/time_logo.png";
 
     // Objects and injections
-    LoggerEngine loggerEngine = new LoggerEngine(statusInfo);
+    LoggerEngine loggerEngine = new LoggerEngine(statusInfo, runningTime);
     ClockEngine clock = new ClockEngine(loggerEngine);
 
     // JButtons

@@ -1,17 +1,19 @@
 package lv.dudins.ControlYourTime.engine;
 
-import lv.dudins.ControlYourTime.literals.MessageTemplate;
-
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static lv.dudins.ControlYourTime.literals.MessageTemplate.UPDATE;
 
 public class ClockEngine {
     // Time control variables
     private boolean running;
-    private long startTime;
+    private boolean paused;
+    private long startTime = 0;
+    private long finalTime = 0;
+    private long pausedTime = 0;
 
     // Objects
     protected LoggerEngine log;
@@ -26,22 +28,34 @@ public class ClockEngine {
     }
 
     public void start() {
-        running = true;
-        startTime = System.currentTimeMillis();
+        if (!paused) {
+            startTime = System.currentTimeMillis();
+            running = true;
+        } else {
+            log.announce(UPDATE, "System is paused.");
+        }
     }
 
     public void stop() {
-        startTime = getTimeMillis();
+        finalTime = getTimeMillis();
         running = false;
-        fileWriterEngine.updateFile(elapsedTimeString(startTime));
+        paused = false;
+        fileWriterEngine.updateFile(elapsedTimeString(finalTime));
+        resetTimes();
     }
 
-    public void toggle() {
-        // TODO: fix timer toggle
-        if (running) {
-            stop();
+    public void pause() {
+        // save pausedTime when paused
+        if (!paused) {
+            paused = true;
+            running = false;
+            pausedTime = System.currentTimeMillis();
         } else {
-            start();
+            paused = false;
+            running = true;
+            long pausedDelta = System.currentTimeMillis() - pausedTime;
+            startTime = startTime + pausedDelta;
+            pausedTime = 0;
         }
     }
 
@@ -49,24 +63,32 @@ public class ClockEngine {
         return new Runnable() {
             public void run() {
                 if (running) {
-                    log.announceAndSetLabel(MessageTemplate.UPDATE.get(), elapsedTimeString(getTimeMillis()));
+                    var time = elapsedTimeString(getTimeMillis());
+                    log.announceAndSetStatusLabel(UPDATE, "Running ...");
+                    log.setInfoLabel(time);
                 }
             }
         };
+    }
+
+    private void resetTimes() {
+        finalTime = 0;
+        startTime = 0;
+        pausedTime = 0;
     }
 
     public long getTimeMillis() {
         if (running) {
             return System.currentTimeMillis() - startTime;
         } else {
-            return startTime;
+            return finalTime;
         }
     }
 
     private String elapsedTimeString(long elapsedTime) {
-        long seconds = TimeUnit.MILLISECONDS.toSeconds(elapsedTime);
-        long minutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTime);
-        long hours = TimeUnit.MILLISECONDS.toHours(elapsedTime);
+        long seconds = MILLISECONDS.toSeconds(elapsedTime);
+        long minutes = MILLISECONDS.toMinutes(elapsedTime);
+        long hours = MILLISECONDS.toHours(elapsedTime);
 
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }

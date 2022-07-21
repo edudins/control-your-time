@@ -2,11 +2,12 @@ package lv.dudins.ControlYourTime.gui;
 
 import lv.dudins.ControlYourTime.engine.ClockEngine;
 import lv.dudins.ControlYourTime.engine.LoggerEngine;
-import lv.dudins.ControlYourTime.literals.MessageTemplate;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import static lv.dudins.ControlYourTime.literals.MessageTemplate.UPDATE;
 
 public class ResponsiveJButton extends JButton implements ActionListener {
     ClockEngine clock;
@@ -21,7 +22,7 @@ public class ResponsiveJButton extends JButton implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
-        log.announceAndSetLabel(MessageTemplate.UPDATE.get(), command);
+        log.announceAndSetStatusLabel(UPDATE, command);
         switch (command) {
             case "START":
                 clock.start();
@@ -30,7 +31,7 @@ public class ResponsiveJButton extends JButton implements ActionListener {
                 clock.stop();
                 break;
             case "PAUSE":
-                clock.toggle();
+                clock.pause();
                 break;
         }
     }

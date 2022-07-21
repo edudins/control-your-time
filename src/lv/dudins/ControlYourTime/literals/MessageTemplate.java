@@ -11,7 +11,7 @@ public enum MessageTemplate {
         this.template = type;
     }
 
-    public String get() {
+    public String build() {
         return template;
     }
 }
