@@ -1,60 +1,33 @@
 package lv.dudins.ControlYourTime.gui;
 
-import lv.dudins.ControlYourTime.engine.FileWriterEngine;
+import lv.dudins.ControlYourTime.engine.ClockEngine;
 import lv.dudins.ControlYourTime.engine.LoggerEngine;
-import lv.dudins.ControlYourTime.literals.MessageTemplate;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class TimeFrame extends JFrame implements ActionListener {
+public class TimeFrame extends JFrame {
     // Dims
     private final int frameWidth = 600;
     private final int frameHeight = 400;
     private int menuWidth, statusWidth;
-    // JButtons
-    private JButton startTimerButton = new JButton();
-    private JButton stopTimerButton = new JButton();
-    private JButton pauseTimerButton = new JButton();
+
     // JLabels
     private JLabel runningTime = new JLabel();
     private JLabel statusInfo = new JLabel();
 
+    // Files
     private final String iconLocation = "res/time_icon.png";
     private final String logoLocation = "res/time_logo.png";
-    // Time control variables
-    private long elapsedTime = -1; // So that timer starts with 0
-    private final int oneSecond = 1000;
-    private boolean running = false;
 
-    // Objects
-    FileWriterEngine fileWriterEngine = new FileWriterEngine();
-    LoggerEngine loggerEngine = new LoggerEngine(statusInfo);
+    // Objects and injections
+    LoggerEngine loggerEngine = new LoggerEngine(statusInfo, runningTime);
+    ClockEngine clock = new ClockEngine(loggerEngine);
 
-    private void initialize() {
-        running = true;
-        new Thread(() -> {
-            while (running) {
-                elapsedTime++;
-                runningTime.setText(elapsedTimeString(elapsedTime));
-                try {
-                    Thread.sleep(oneSecond);
-                } catch(Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
-    private String elapsedTimeString(long elapsedTime) {
-        long seconds = elapsedTime % 60;
-        long minutes = (elapsedTime / 60) % 60;
-        long hours = (elapsedTime / 3600) % 60;
-
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
-    }
+    // JButtons
+    private ResponsiveJButton startTimerButton = new ResponsiveJButton(clock, loggerEngine);
+    private ResponsiveJButton stopTimerButton = new ResponsiveJButton(clock, loggerEngine);
+    private ResponsiveJButton pauseTimerButton = new ResponsiveJButton(clock, loggerEngine);
 
     public TimeFrame() {
         // Get dims
@@ -75,15 +48,12 @@ public class TimeFrame extends JFrame implements ActionListener {
         // Buttons
         startTimerButton.setText("START");
         startTimerButton.setFocusable(false);
-        startTimerButton.addActionListener(this);
 
         stopTimerButton.setText("STOP");
         stopTimerButton.setFocusable(false);
-        stopTimerButton.addActionListener(this);
 
-        pauseTimerButton.setText("PAUSE TOGGLE");
+        pauseTimerButton.setText("PAUSE");
         pauseTimerButton.setFocusable(false);
-        pauseTimerButton.addActionListener(this);
 
         // ImageIcon
         ImageIcon favicon = new ImageIcon(iconLocation); // create an ImageIcon
@@ -124,28 +94,6 @@ public class TimeFrame extends JFrame implements ActionListener {
         this.setResizable(false);
 
         this.setVisible(true);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == startTimerButton && !running) {
-            initialize();
-            loggerEngine.announceAndSetLabel(MessageTemplate.UPDATE.getTemplate(), "Timer started.");
-        } else if (e.getSource() == pauseTimerButton) {
-            if (running) {
-                running = false;
-                loggerEngine.announceAndSetLabel(MessageTemplate.UPDATE.getTemplate(), "Paused.");
-            } else {
-                elapsedTime--; // So elapsed time doesn't immediately go up by one
-                initialize();
-                loggerEngine.announceAndSetLabel(MessageTemplate.UPDATE.getTemplate(), "Timer running.");
-            }
-    } else if (e.getSource() == stopTimerButton && running) {
-            running = false;
-            fileWriterEngine.updateFile(elapsedTimeString(elapsedTime), statusInfo);
-            runningTime.setText("00:00:00");
-            elapsedTime = 0;
-        }
     }
 
 }

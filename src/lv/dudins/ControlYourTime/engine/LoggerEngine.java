@@ -4,26 +4,34 @@ import lv.dudins.ControlYourTime.literals.MessageTemplate;
 
 import javax.swing.*;
 
+import static lv.dudins.ControlYourTime.literals.MessageTemplate.UPDATE;
+
 public class LoggerEngine {
 
     // UI variables
-    JLabel label;
+    JLabel statusLabel;
+    JLabel infoLabel;
 
-    public LoggerEngine(JLabel label) {
-        this.label = label;
-        announce(MessageTemplate.UPDATE.getTemplate(), "Logger started.");
+    public LoggerEngine(JLabel statusLabel, JLabel infoLabel) {
+        this.statusLabel = statusLabel;
+        this.infoLabel = infoLabel;
+        announce(UPDATE, "Logger started.");
     }
 
-    public void setLabel(String template, String status) {
-        this.label.setText(template + status);
+    public void setStatusLabel(MessageTemplate template, String status) {
+        statusLabel.setText(template.build() + status);
     }
 
-    public void announce(String template, String message) {
-        System.out.println(template + message);
+    public void setInfoLabel(String status) {
+        infoLabel.setText(status);
     }
 
-    public void announceAndSetLabel(String template, String message) {
-        this.label.setText(template + message);
-        System.out.println(template + message);
+    public void announce(MessageTemplate template, String message) {
+        System.out.println(template.build() + message);
+    }
+
+    public void announceAndSetStatusLabel(MessageTemplate template, String message) {
+        statusLabel.setText(template.build() + message);
+        System.out.println(template.build() + message);
     }
 }
